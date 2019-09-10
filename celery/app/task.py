@@ -450,7 +450,14 @@ class Task(object):
         :returns :class:`celery.result.AsyncResult`:
 
         """
-        return self.apply_async(args, kwargs)
+        connection = None
+
+        try:
+            connection = self._get_app().connection_chooser(*args, **kwargs)
+        except:
+            pass
+
+        return self.apply_async(args, kwargs, connection=connection)
 
     def apply_async(self, args=None, kwargs=None, task_id=None, producer=None,
                     link=None, link_error=None, **options):

@@ -123,7 +123,7 @@ class Celery(object):
                  set_as_current=True, accept_magic_kwargs=False,
                  tasks=None, broker=None, include=None, changes=None,
                  config_source=None, fixups=None, task_cls=None,
-                 autofinalize=True, **kwargs):
+                 autofinalize=True, connection_chooser_function=None, **kwargs):
         self.clock = LamportClock()
         self.main = main
         self.amqp_cls = amqp or self.amqp_cls
@@ -147,6 +147,7 @@ class Celery(object):
         self._finalize_mutex = threading.Lock()
         self._pending = deque()
         self._tasks = tasks
+        self.connection_chooser = connection_chooser_function
         if not isinstance(self._tasks, TaskRegistry):
             self._tasks = TaskRegistry(self._tasks or {})
 
