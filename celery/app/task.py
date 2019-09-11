@@ -561,10 +561,11 @@ class Task(object):
 
         """
 
+        connection = None
         try:
-            connection = self._get_app().connection_chooser(*args, **kwargs)
-            if connection:
-                kwargs['connection'] = connection
+            celery_app = self._get_app()
+            connection, queue_name = celery_app.connection_chooser(celery_app, self)
+            options['queue'] = queue_name
         except:
             pass
 
@@ -578,7 +579,7 @@ class Task(object):
             args = (self.__self__, ) + args
         return app.send_task(
             self.name, args, kwargs, task_id=task_id, producer=producer,
-            link=link, link_error=link_error, result_cls=self.AsyncResult,
+            link=link, link_error=link_error, result_cls=self.AsyncResult, connection=connection,
             **dict(self._get_exec_options(), **options)
         )
 
