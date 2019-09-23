@@ -556,8 +556,9 @@ class Task(object):
         connection = None
         try:
             celery_app = self._get_app()
-            connection, queue_name = celery_app.connection_chooser(celery_app, self)
-            options['queue'] = queue_name
+            connection, queue_name = celery_app.connection_chooser(celery_app, self, options.get('queue'))
+            if queue_name:
+                options['queue'] = queue_name
         except:
             pass
 
