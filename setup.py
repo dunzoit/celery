@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import subprocess
-
 try:
     from setuptools import setup, find_packages
     from setuptools.command.test import test
@@ -147,7 +145,6 @@ install_requires = reqs('default.txt')
 if JYTHON:
     install_requires.extend(reqs('jython.txt'))
 
-# install_requires.extend("git+https://github.com/dunzoit/kombu.git@test-merge")
 # -*- Tests Requires -*-
 
 tests_require = reqs('test3.txt' if PY3 else 'test.txt')
@@ -202,6 +199,5 @@ setup(
     classifiers=classifiers,
     entry_points=entrypoints,
     long_description=long_description,
+    dependency_links=["git+https://github.com/dunzoit/kombu.git@test-merge"],
     **extra)
-
-subprocess.call(["pip", "install", "git+https://github.com/dunzoit/kombu.git@test-merge"])
