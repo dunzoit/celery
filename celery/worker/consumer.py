@@ -30,6 +30,7 @@ from kombu.syn import _detect_environment
 from kombu.utils.compat import get_errno
 from kombu.utils.encoding import safe_repr, bytes_t
 from kombu.utils.limits import TokenBucket
+from kombu.transport.pubsub import Message
 
 from celery import chain
 from celery import bootsteps
@@ -448,6 +449,9 @@ class Consumer(object):
         callbacks = self.on_task_message
 
         def on_task_received(body, message):
+            if isinstance(message, Message):
+                import json
+                body = json.loads(json.loads(body)['body'])
             headers = message.headers
             try:
                 type_, is_proto2 = headers['task'], 1
