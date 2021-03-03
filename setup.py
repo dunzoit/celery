@@ -199,5 +199,5 @@ setup(
     classifiers=classifiers,
     entry_points=entrypoints,
     long_description=long_description,
-    dependency_links=["git+https://github.com/dunzoit/kombu.git@pubsub-final-test#egg=kombu"],
+    dependency_links=["git+https://github.com/dunzoit/kombu.git@kombu-master-tag#egg=kombu"],
     **extra)
